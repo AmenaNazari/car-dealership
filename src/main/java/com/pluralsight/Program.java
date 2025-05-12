@@ -1,41 +1,22 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class Program {
     public static void main(String[] args) {
+        // Step 1: Load dealership from file
         DealershipFileManager fileManager = new DealershipFileManager();
         Dealership dealership = fileManager.getDealership();
 
+        if (dealership == null) {
+            System.out.println("Unable to load dealership. Exiting...");
+            return;
+        }
+
+        // Step 2: Launch user interface
         UserInterface ui = new UserInterface(dealership);
-        ui.display();  // This method will run your app's menu
+        ui.display();
+
+        // Step 3: Save dealership back to file when user quits
+        fileManager.saveDealership(dealership);
     }
+
 }
-
-
-public class Program {
-    public static void main(String[] args) {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("inventory.txt"));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println("Read line: " + line);
-            }
-
-            reader.close();
-        } catch (IOException e) {
-            System.out.println("Could not read inventory.txt");
-            e.printStackTrace();
-        }
-        DealershipFileManager manager = new DealershipFileManager();
-        Dealership dealership = manager.getDealership();
-
-        for (Vehicle v : dealership.getAllVehicles()) {
-            System.out.println(v);
-        }
-    }
-}
-
